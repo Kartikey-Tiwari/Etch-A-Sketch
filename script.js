@@ -2,10 +2,16 @@ const board = document.querySelector('#board');
 const buttons = document.querySelectorAll('button');
 let mouseDownInBoard = false;
 let currentColor = 'black';
-let currentMode = 'Normal';
+let activeMode = document.querySelector('#normal');
+activeMode.classList.add('active')
 
 buttons.forEach(button => {
     button.addEventListener('click', (event) => {
+        if (event.target.id !== 'reset'){
+            activeMode.classList.remove('active');
+            event.target.classList.add('active');
+            activeMode = event.target;
+        }
         if (event.target.id === 'normal'){
             currentColor = 'black';
             currentMode = 'normal';
@@ -32,7 +38,7 @@ function colorDivNormal(event){
     if (event.type === 'mousedown')
         mouseDownInBoard = true;
     if (event.buttons === 1 && mouseDownInBoard){
-        if (currentMode === 'rainbow'){
+        if (activeMode.getAttribute('id') === 'rainbow'){
             currentColor = `#${Math.floor(Math.random() * (0xffffff + 1)).toString(16)}`
         }
         event.target.style.backgroundColor = `${currentColor}`;

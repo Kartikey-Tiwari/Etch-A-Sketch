@@ -29,6 +29,10 @@ button:hover:not(.active){
     background-color: #277880;
 }
 
+.active{
+    background-color: rgba(250, 41, 41, 0.74);
+}
+
 #board{
     width: 500px;
     height: 500px;
