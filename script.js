@@ -1,26 +1,26 @@
 const board = document.querySelector('#board');
 let boardSize = 11;
-const buttons = document.querySelectorAll('button');
+const buttons = document.querySelectorAll('button:not(#newGridConfirmation)');
+const newGridButton = document.querySelector('#newGridConfirmation');
 let mouseDownInBoard = false;
 let currentColor = 'black';
 let activeMode = document.querySelector('#normal');
 activeMode.classList.add('active')
 let slider = document.querySelector('#board-size');
 let sliderVal = document.querySelector('#board-size-value');
-let timeOut;
+
+newGridButton.addEventListener('click', event =>{
+    if (+slider.value === boardSize)
+        return;
+    if (confirm('Create new board?')){
+        removeBoard();
+        boardSize = +slider.value;
+        drawBoard();
+    }
+});
 
 slider.addEventListener('input', (event) => {
     sliderVal.textContent = `Board size: ${slider.value}x${slider.value}`;
-    clearTimeout(timeOut);
-    timeOut = setTimeout(() => {
-        if (boardSize === +slider.value)
-            clearTimeout(timeOut);
-        else{
-            removeBoard();
-            boardSize = +slider.value;
-            drawBoard();
-        }
-    }, 500);
 });
 
 buttons.forEach(button => {
