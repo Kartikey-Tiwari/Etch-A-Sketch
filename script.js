@@ -1,12 +1,42 @@
 const board = document.querySelector('#board');
+const buttons = document.querySelectorAll('button');
 let mouseDownInBoard = false;
+let currentColor = 'black';
+let currentMode = 'Normal';
+
+buttons.forEach(button => {
+    button.addEventListener('click', (event) => {
+        if (event.target.id === 'normal'){
+            currentColor = 'black';
+            currentMode = 'normal';
+        }
+        else if (event.target.id === 'erasor'){
+            currentColor = 'white';
+            currentMode = 'erasor';
+        }
+        else if (event.target.id === 'rainbow'){
+            currentMode = 'rainbow';
+        }
+        else {
+            Array.from(board.children).forEach(row => {
+                Array.from(row.children).forEach(cell => {
+                    cell.style.backgroundColor = 'white';
+                })
+            });
+        }
+    });
+});
 
 function colorDivNormal(event){
     event.preventDefault();
     if (event.type === 'mousedown')
         mouseDownInBoard = true;
-    if (event.buttons === 1 && mouseDownInBoard)
-        event.target.style.backgroundColor = 'black';
+    if (event.buttons === 1 && mouseDownInBoard){
+        if (currentMode === 'rainbow'){
+            currentColor = `#${Math.floor(Math.random() * (0xffffff + 1)).toString(16)}`
+        }
+        event.target.style.backgroundColor = `${currentColor}`;
+    }
     else{
         mouseDownInBoard = false;
     }
