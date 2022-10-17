@@ -23,6 +23,7 @@ for(let j = 0; j < 64; j++){
         div.addEventListener('mousedown', colorDivNormal);
         div.style.width = `${100/64}%`;
         div.style.height = '100%';
+        div.style.backgroundColor = 'white'
         row.appendChild(div);
     }
     board.appendChild(row);

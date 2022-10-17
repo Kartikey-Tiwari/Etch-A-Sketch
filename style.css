@@ -1,4 +1,37 @@
+body{
+    margin: 0;
+    background-color: #FFD9C0;
+}
+
+h1{
+    text-align: center;
+    font-size: 48px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: red;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button{
+    background-color: #99dae0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
 #board{
     width: 500px;
     height: 500px;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    gap: 100px;
 }
