@@ -25,6 +25,10 @@ button{
     margin-bottom: 20px;
 }
 
+button:hover:not(.active){
+    background-color: #277880;
+}
+
 #board{
     width: 500px;
     height: 500px;
