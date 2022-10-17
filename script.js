@@ -1,9 +1,15 @@
 const board = document.querySelector('#board');
+let mouseDownInBoard = false;
 
 function colorDivNormal(event){
     event.preventDefault();
-    if (event.buttons === 1)
+    if (event.type === 'mousedown')
+        mouseDownInBoard = true;
+    if (event.buttons === 1 && mouseDownInBoard)
         event.target.style.backgroundColor = 'black';
+    else{
+        mouseDownInBoard = false;
+    }
 }
 
 for(let j = 0; j < 64; j++){
