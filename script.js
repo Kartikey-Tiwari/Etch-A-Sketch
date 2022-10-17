@@ -1,9 +1,27 @@
 const board = document.querySelector('#board');
+let boardSize = 11;
 const buttons = document.querySelectorAll('button');
 let mouseDownInBoard = false;
 let currentColor = 'black';
 let activeMode = document.querySelector('#normal');
 activeMode.classList.add('active')
+let slider = document.querySelector('#board-size');
+let sliderVal = document.querySelector('#board-size-value');
+let timeOut;
+
+slider.addEventListener('input', (event) => {
+    sliderVal.textContent = `Board size: ${slider.value}x${slider.value}`;
+    clearTimeout(timeOut);
+    timeOut = setTimeout(() => {
+        if (boardSize === +slider.value)
+            clearTimeout(timeOut);
+        else{
+            removeBoard();
+            boardSize = +slider.value;
+            drawBoard();
+        }
+    }, 500);
+});
 
 buttons.forEach(button => {
     button.addEventListener('click', (event) => {
@@ -48,19 +66,29 @@ function colorDivNormal(event){
     }
 }
 
-for(let j = 0; j < 64; j++){
-    const row = document.createElement('div');
-    row.style.width = '100%';
-    row.style.height = `${100/64}%` 
-    row.style.display = 'flex';
-    for(let i = 0; i < 64; i++){
-        const div = document.createElement('div');
-        div.addEventListener('mouseover', colorDivNormal);
-        div.addEventListener('mousedown', colorDivNormal);
-        div.style.width = `${100/64}%`;
-        div.style.height = '100%';
-        div.style.backgroundColor = 'white'
-        row.appendChild(div);
+function removeBoard(){
+    for(let i = board.children.length-1; i >= 0; i--){
+        board.children[i].remove();
     }
-    board.appendChild(row);
 }
+
+function drawBoard(){
+    for(let j = 0; j < boardSize; j++){
+        const row = document.createElement('div');
+        row.style.width = '100%';
+        row.style.height = `${100/boardSize}%` 
+        row.style.display = 'flex';
+        for(let i = 0; i < boardSize; i++){
+            const div = document.createElement('div');
+            div.addEventListener('mouseover', colorDivNormal);
+            div.addEventListener('mousedown', colorDivNormal);
+            div.style.width = `${100/boardSize}%`;
+            div.style.height = '100%';
+            div.style.backgroundColor = 'white'
+            row.appendChild(div);
+        }
+        board.appendChild(row);
+    }
+}
+
+drawBoard();
