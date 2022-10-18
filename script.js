@@ -2,7 +2,8 @@ const board = document.querySelector('#board');
 let boardSize = 11;
 const buttons = document.querySelectorAll('button:not(#newGridConfirmation)');
 const newGridButton = document.querySelector('#newGridConfirmation');
-const toggleGridLines = document.querySelector('#gridlines-toggle');
+const gridlineButton = document.querySelector('#gridlines');
+let isGridOn = false;
 let mouseDownInBoard = false;
 let currentColor = 'black';
 let activeMode = document.querySelector('#normal');
@@ -10,24 +11,27 @@ activeMode.classList.add('active')
 let slider = document.querySelector('#board-size');
 let sliderVal = document.querySelector('#board-size-value');
 
-toggleGridLines.addEventListener('input', (event) => {
-    if (event.target.checked){
-        Array.from(board.children).forEach(row => {
-            Array.from(row.children).forEach(cell => {
-                if (cell != row.children[0])
-                    cell.style.borderLeft = '1px solid grey';
-                if (row !== board.children[0])
-                    cell.style.borderTop = '1px solid grey';
-            });
+function drawGrid(border){
+    Array.from(board.children).forEach(row => {
+        Array.from(row.children).forEach(cell => {
+            if (cell != row.children[0])
+                cell.style.borderLeft = border;
+            if (row !== board.children[0])
+                cell.style.borderTop = border;
         });
+    });
+}
+
+gridlineButton.addEventListener('click', (event) => {
+    if (!isGridOn){
+        isGridOn = true;
+        event.target.classList.add('active');
+        drawGrid('1px solid grey');
     }
     else{
-        Array.from(board.children).forEach(row => {
-            Array.from(row.children).forEach(cell => {
-                cell.style.borderLeft = 'none';
-                cell.style.borderTop = 'none';
-            });
-        });
+        isGridOn = false;
+        event.target.classList.remove('active');
+        drawGrid('none');
     }
 });
 
@@ -38,6 +42,8 @@ newGridButton.addEventListener('click', event =>{
         removeBoard();
         boardSize = +slider.value;
         drawBoard();
+        if (isGridOn)
+            drawGrid('1px solid grey');
     }
 });
 
@@ -46,31 +52,32 @@ slider.addEventListener('input', (event) => {
 });
 
 buttons.forEach(button => {
-    button.addEventListener('click', (event) => {
-        if (event.target.id !== 'reset'){
-            activeMode.classList.remove('active');
-            event.target.classList.add('active');
-            activeMode = event.target;
-        }
-        if (event.target.id === 'normal'){
-            currentColor = 'black';
-            currentMode = 'normal';
-        }
-        else if (event.target.id === 'eraser'){
-            currentColor = 'white';
-            currentMode = 'eraser';
-        }
-        else if (event.target.id === 'rainbow'){
-            currentMode = 'rainbow';
-        }
-        else {
-            Array.from(board.children).forEach(row => {
-                Array.from(row.children).forEach(cell => {
-                    cell.style.backgroundColor = 'white';
-                })
-            });
-        }
-    });
+    if (button.textContent != 'Gridlines')
+        button.addEventListener('click', (event) => {
+            if (event.target.id !== 'reset'){
+                activeMode.classList.remove('active');
+                event.target.classList.add('active');
+                activeMode = event.target;
+            }
+            if (event.target.id === 'normal'){
+                currentColor = 'black';
+                currentMode = 'normal';
+            }
+            else if (event.target.id === 'eraser'){
+                currentColor = 'white';
+                currentMode = 'eraser';
+            }
+            else if (event.target.id === 'rainbow'){
+                currentMode = 'rainbow';
+            }
+            else {
+                Array.from(board.children).forEach(row => {
+                    Array.from(row.children).forEach(cell => {
+                        cell.style.backgroundColor = 'white';
+                    })
+                });
+            }
+        });
 });
 
 function colorDivNormal(event){
