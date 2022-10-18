@@ -2,12 +2,34 @@ const board = document.querySelector('#board');
 let boardSize = 11;
 const buttons = document.querySelectorAll('button:not(#newGridConfirmation)');
 const newGridButton = document.querySelector('#newGridConfirmation');
+const toggleGridLines = document.querySelector('#gridlines-toggle');
 let mouseDownInBoard = false;
 let currentColor = 'black';
 let activeMode = document.querySelector('#normal');
 activeMode.classList.add('active')
 let slider = document.querySelector('#board-size');
 let sliderVal = document.querySelector('#board-size-value');
+
+toggleGridLines.addEventListener('input', (event) => {
+    if (event.target.checked){
+        Array.from(board.children).forEach(row => {
+            Array.from(row.children).forEach(cell => {
+                if (cell != row.children[0])
+                    cell.style.borderLeft = '1px solid grey';
+                if (row !== board.children[0])
+                    cell.style.borderTop = '1px solid grey';
+            });
+        });
+    }
+    else{
+        Array.from(board.children).forEach(row => {
+            Array.from(row.children).forEach(cell => {
+                cell.style.borderLeft = 'none';
+                cell.style.borderTop = 'none';
+            });
+        });
+    }
+});
 
 newGridButton.addEventListener('click', event =>{
     if (+slider.value === boardSize)
