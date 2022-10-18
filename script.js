@@ -56,9 +56,9 @@ buttons.forEach(button => {
             currentColor = 'black';
             currentMode = 'normal';
         }
-        else if (event.target.id === 'erasor'){
+        else if (event.target.id === 'eraser'){
             currentColor = 'white';
-            currentMode = 'erasor';
+            currentMode = 'eraser';
         }
         else if (event.target.id === 'rainbow'){
             currentMode = 'rainbow';
