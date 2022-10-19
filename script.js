@@ -5,12 +5,18 @@ const newGridButton = document.querySelector('#newGridConfirmation');
 const gridlineButton = document.querySelector('#gridlines');
 let isGridOn = false;
 let mouseDownInBoard = false;
-let currentColor = 'black';
 let activeMode = document.querySelector('#normal');
 activeMode.classList.add('active')
 let slider = document.querySelector('#board-size');
 let sliderVal = document.querySelector('#board-size-value');
 const fillButton = document.querySelector('#fill');
+const colorInput = document.querySelector('input[type="color"]');
+let currentColor = `${colorInput.value}`;
+
+colorInput.addEventListener('input', (event) => {
+    if (activeMode.id !== 'eraser')
+        currentColor = `${colorInput.value}`
+});
 
 function drawGrid(border){
     Array.from(board.children).forEach(row => {
@@ -59,14 +65,11 @@ buttons.forEach(button => {
                 activeMode.classList.remove('active');
                 event.target.classList.add('active');
                 activeMode = event.target;
-                if (event.target.id === 'normal'){
-                    currentColor = 'black';
+                if (event.target.id === 'normal' || event.target.id === 'fill'){
+                    currentColor = `${colorInput.value}`;
                 }
                 else if (event.target.id === 'eraser'){
                     currentColor = 'white';
-                }
-                else if (event.target.id === 'fill'){
-                    currentColor = 'black';
                 }
             }
             else{
@@ -101,6 +104,8 @@ function floodFill(div, x, y){
 
 function colorDivNormal(event){
     event.preventDefault();
+    if (activeMode.id === 'eraser')
+        currentColor = 'white';
     if (event.type === 'mousedown'){;
         if (activeMode.id === 'fill'){
             const x = Array.from(board.children).indexOf(event.target.parentElement);

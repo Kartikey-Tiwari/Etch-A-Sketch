@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Etch-A-Sketch</title>
     <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <script src="./script.js" defer></script>
   </head>
   <body>
@@ -15,12 +18,13 @@
         <ul id="menu">
           <div id="two-col">
             <div>
-              <li><button id="normal">Normal Mode</button></li>
+              <li><input type="color" value="#000000"></li>
+              <li><button id="normal">Color Mode</button></li>
               <li><button id="rainbow">Rainbow Mode</button></li>
               <li><button id="fill">Fill Color</button></li>
-              <li><button id="eraser">Eraser</button></li>
             </div>
             <div>
+              <li><button id="eraser">Eraser</button></li>
               <li><button id="reset">Reset</button></li>
               <li id="gridlines-section">
                 <label for="board-size" id="board-size-value"

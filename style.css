@@ -4,7 +4,7 @@ body{
 }
 
 body, button{
-    font-family: cursive;
+    font-family: 'Montserrat', sans-serif;
 }
 
 h1{
@@ -75,4 +75,31 @@ label[for='gridlines-toggle']{
 #two-col{
     display: flex;
     gap: 50px;
+}
+
+#two-col div:first-child{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input[type='color']{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: transparent;
+    border: none;
+    appearance: none;
+    cursor: pointer;
+    width: 70px;
+    height: 50px;
+}
+
+input[type='color']::-webkit-color-swatch {
+    border-radius: 15px;
+    border: 3px solid black;
+}
+input[type='color']::-moz-color-swatch {
+    border-radius: 15px;
+    border: 3px solid black;
 }
