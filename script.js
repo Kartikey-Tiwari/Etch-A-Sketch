@@ -10,6 +10,7 @@ let activeMode = document.querySelector('#normal');
 activeMode.classList.add('active')
 let slider = document.querySelector('#board-size');
 let sliderVal = document.querySelector('#board-size-value');
+const fillButton = document.querySelector('#fill');
 
 function drawGrid(border){
     Array.from(board.children).forEach(row => {
@@ -58,19 +59,17 @@ buttons.forEach(button => {
                 activeMode.classList.remove('active');
                 event.target.classList.add('active');
                 activeMode = event.target;
+                if (event.target.id === 'normal'){
+                    currentColor = 'black';
+                }
+                else if (event.target.id === 'eraser'){
+                    currentColor = 'white';
+                }
+                else if (event.target.id === 'fill'){
+                    currentColor = 'black';
+                }
             }
-            if (event.target.id === 'normal'){
-                currentColor = 'black';
-                currentMode = 'normal';
-            }
-            else if (event.target.id === 'eraser'){
-                currentColor = 'white';
-                currentMode = 'eraser';
-            }
-            else if (event.target.id === 'rainbow'){
-                currentMode = 'rainbow';
-            }
-            else {
+            else{
                 Array.from(board.children).forEach(row => {
                     Array.from(row.children).forEach(cell => {
                         cell.style.backgroundColor = 'white';
@@ -80,10 +79,37 @@ buttons.forEach(button => {
         });
 });
 
+function floodFill(div, x, y){
+    if (div.style.backgroundColor === currentColor)
+        return;
+    const originalColor = div.style.backgroundColor;
+    div.style.backgroundColor = currentColor;
+
+    if (x > 0 && board.children[x-1].children[y].style.backgroundColor === originalColor){
+        floodFill(board.children[x-1].children[y], x-1, y);
+    }
+    if (x < boardSize-1 && board.children[x+1].children[y].style.backgroundColor === originalColor){
+        floodFill(board.children[x+1].children[y], x+1, y);
+    }
+    if (y > 0 && board.children[x].children[y-1].style.backgroundColor === originalColor){
+        floodFill(board.children[x].children[y-1], x, y-1);
+    }
+    if (y < boardSize-1 && board.children[x].children[y+1].style.backgroundColor === originalColor){
+        floodFill(board.children[x].children[y+1], x, y+1);
+    }
+}
+
 function colorDivNormal(event){
     event.preventDefault();
-    if (event.type === 'mousedown')
+    if (event.type === 'mousedown'){;
+        if (activeMode.id === 'fill'){
+            const x = Array.from(board.children).indexOf(event.target.parentElement);
+            const y = Array.from(event.target.parentElement.children).indexOf(event.target);
+            floodFill(event.target, x, y);
+            return;
+        }
         mouseDownInBoard = true;
+    }
     if (event.buttons === 1 && mouseDownInBoard){
         if (activeMode.getAttribute('id') === 'rainbow'){
             currentColor = `#${Math.floor(Math.random() * (0xffffff + 1)).toString(16)}`

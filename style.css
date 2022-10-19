@@ -71,3 +71,8 @@ label[for='gridlines-toggle']{
     padding: 20px;
     border-radius: 20px
 }
+
+#two-col{
+    display: flex;
+    gap: 50px;
+}

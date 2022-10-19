@@ -10,24 +10,32 @@
   </head>
   <body>
     <div id="container">
-        <h1>Etch-A-Sketch</h1>
-        <main>
-            <ul id="menu">
-                <li><button id="normal">Normal Mode</button></li>
-                <li><button id="rainbow">Rainbow Mode</button></li>
-                <li><button id="eraser">Eraser</button></li>
-                <li><button id="reset">Reset</button></li>
-                <li id="gridlines-section">
-                    <label for="board-size" id="board-size-value">Board size: 11x11</label
-                    ><input type="range" min="1" max="64" value="11" id="board-size" />
-                    <button id="newGridConfirmation">New Board</button>
-                </li>
-                <li>
-                    <button id="gridlines">Gridlines</button>
-                </li>
-            </ul>
-            <div id="board"></div>
-        </main>
+      <h1>Etch-A-Sketch</h1>
+      <main>
+        <ul id="menu">
+          <div id="two-col">
+            <div>
+              <li><button id="normal">Normal Mode</button></li>
+              <li><button id="rainbow">Rainbow Mode</button></li>
+              <li><button id="fill">Fill Color</button></li>
+              <li><button id="eraser">Eraser</button></li>
+            </div>
+            <div>
+              <li><button id="reset">Reset</button></li>
+              <li id="gridlines-section">
+                <label for="board-size" id="board-size-value"
+                  >Board size: 11x11</label
+                ><input type="range" min="1" max="64" value="11" id="board-size" />
+                <button id="newGridConfirmation">New Board</button>
+              </li>
+              <li>
+                <button id="gridlines">Gridlines</button>
+              </li>
+            </div>
+          </div>
+        </ul>
+        <div id="board"></div>
+      </main>
     </div>
   </body>
 </html>
