@@ -6,40 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Etch-A-Sketch</title>
     <link rel="stylesheet" href="./style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/41013f5681.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="./script.js" defer></script>
   </head>
   <body>
-    <div id="container">
+    <header>
       <h1>Etch-A-Sketch</h1>
-      <main>
-        <ul id="menu">
-          <div id="two-col">
-            <div>
-              <li><input type="color" value="#000000"></li>
-              <li><button id="normal">Color Mode</button></li>
-              <li><button id="rainbow">Rainbow Mode</button></li>
-              <li><button id="fill">Fill Color</button></li>
-            </div>
-            <div>
-              <li><button id="eraser">Eraser</button></li>
-              <li><button id="reset">Reset</button></li>
-              <li id="gridlines-section">
-                <label for="board-size" id="board-size-value"
-                  >Board size: 11x11</label
-                ><input type="range" min="1" max="64" value="11" id="board-size" />
-                <button id="newGridConfirmation">New Board</button>
-              </li>
-              <li>
-                <button id="gridlines">Gridlines</button>
-              </li>
-            </div>
-          </div>
-        </ul>
-        <div id="board"></div>
-      </main>
-    </div>
+    </header>
+    <main>
+      <ul id="menu">
+        <div id="menu-row">
+          <li><input type="color" value="#000000" /></li>
+          <li>
+            <button id="normal">
+              <i class="fa-solid fa-paintbrush"></i>
+            </button>
+          </li>
+          <li>
+            <button id="rainbow"><i class="fa-solid fa-rainbow"></i></button>
+          </li>
+          <li>
+            <button id="fill"><i class="fa-solid fa-fill-drip"></i></button>
+          </li>
+          <li>
+            <button id="eraser"><i class="fa-solid fa-eraser"></i></button>
+          </li>
+          <li>
+            <button id="reset"><i class="fa-solid fa-trash"></i></button>
+          </li>
+          <li>
+            <button id="gridlines"><i class="fa-solid fa-table"></i></button>
+          </li>
+        </div>
+        <li id="board-size-container">
+          <label for="board-size" id="board-size-value">11x11</label
+          ><input type="range" min="1" max="64" value="11" id="board-size" />
+          <button id="newGridConfirmation">New Board</button>
+        </li>
+      </ul>
+      <div id="board"></div>
+    </main>
   </body>
 </html>
