@@ -13,6 +13,8 @@ const img = document.querySelector(".img-to-download");
 const downloadBtn = document.querySelector(".download");
 const overlay = document.querySelector(".overlay");
 const modal = document.querySelector(".modal");
+const colorPickerBtn = document.querySelector("#color-picker-btn");
+const colorPicker = document.querySelector("#color-picker");
 
 //variables to manage state
 let sliderVal = document.querySelector("#board-size-value");
@@ -26,7 +28,6 @@ activeMode.classList.add("active");
 // board related functions
 function drawBoard() {
   for (let j = 0; j < boardSize; j++) {
-    console.log("j: " + j);
     const row = document.createElement("div");
     row.style.display = "flex";
     row.style.height = `calc(100%/${boardSize})`;
@@ -40,7 +41,6 @@ function drawBoard() {
       row.appendChild(div);
     }
     board.appendChild(row);
-    console.log("j: " + j);
   }
 }
 
@@ -177,9 +177,18 @@ downloadBtn.addEventListener("click", function () {
   link.click();
 });
 
+window.onload = function () {
+  setTimeout(() => {
+    const colorPickerIcon = document.querySelector("svg");
+    colorPicker.addEventListener("input", () => {
+      colorPickerIcon.style.border = `4px solid ${colorPicker.value}`;
+    });
+  }, 1000);
+};
+
 // menu buttons
 buttons.forEach((button) => {
-  if (button.id != "gridlines")
+  if (button.id != "gridlines" && button.id != "color-picker-btn")
     button.addEventListener("click", (event) => {
       if (button.id !== "reset") {
         activeMode.classList.remove("active");
@@ -198,7 +207,7 @@ buttons.forEach((button) => {
         });
       }
     });
-  else {
+  else if (button.id === "gridlines") {
     button.addEventListener("click", () => {
       if (!isGridOn) {
         isGridOn = true;
@@ -227,6 +236,10 @@ slider.addEventListener("input", (event) => {
   sliderVal.textContent = `${slider.value} x ${slider.value}`;
 });
 
+colorPickerBtn.addEventListener("click", () => {
+  colorPicker.click();
+});
+
 const loader = document.querySelector(".loader");
 
 function showLoader() {
@@ -237,6 +250,7 @@ function showLoader() {
 function hideLoader() {
   loader.style.display = "none";
 }
+
 saveImgBtn.addEventListener("click", () => {
   showLoader();
   setTimeout(() => {

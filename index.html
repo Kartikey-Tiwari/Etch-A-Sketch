@@ -24,30 +24,47 @@
     <main>
       <ul id="menu">
         <div id="menu-row">
-          <li><input type="color" value="#000000" /></li>
           <li>
-            <button id="normal">
-              <i class="fa-solid fa-paintbrush"></i>
+            <button id="color-picker-btn" title="Color Picker">
+              <i
+                id="color-picker-icon"
+                class="fa-solid fa-droplet icon"
+              ></i></button
+            ><input id="color-picker" type="color" value="#000000" />
+          </li>
+          <li>
+            <button id="normal" title="Paintbrush">
+              <i class="fa-solid fa-paintbrush icon"></i>
             </button>
           </li>
           <li>
-            <button id="rainbow"><i class="fa-solid fa-rainbow"></i></button>
+            <button id="rainbow" title="Rainbow brush">
+              <i class="fa-solid fa-rainbow icon"></i>
+            </button>
           </li>
           <li>
-            <button id="fill"><i class="fa-solid fa-fill-drip"></i></button>
+            <button id="fill" title="Fill color">
+              <i class="fa-solid fa-fill-drip icon"></i>
+            </button>
           </li>
           <li>
-            <button id="eraser"><i class="fa-solid fa-eraser"></i></button>
+            <button id="eraser" title="Eraser">
+              <i class="fa-solid fa-eraser icon"></i>
+            </button>
           </li>
           <li>
-            <button id="reset"><i class="fa-solid fa-trash"></i></button>
+            <button id="reset" title="Clear board">
+              <i class="fa-solid fa-trash icon"></i>
+            </button>
           </li>
           <li>
-            <button id="gridlines"><i class="fa-solid fa-table"></i></button>
+            <button id="gridlines" title="Show gridlines">
+              <i class="fa-solid fa-table icon"></i>
+            </button>
           </li>
           <li>
-            <button id="save-as-img">
-              <i class="fa-solid fa-floppy-disk"></i>
+            <button id="save-as-img" title="Save as image">
+              <i class="fa-solid fa-floppy-disk icon"></i>
             </button>
           </li>
         </div>

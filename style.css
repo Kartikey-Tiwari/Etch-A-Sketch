@@ -54,12 +54,6 @@ main {
   background-color: white;
 }
 
-#menu-row li:first-child {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 #menu-row > * {
   flex: 1;
 }
@@ -82,23 +76,20 @@ main {
 }
 
 input[type="color"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: transparent;
+  height: 0;
+  width: 0;
   border: none;
-  appearance: none;
-  cursor: pointer;
-  height: 49px;
-  width: 50px;
 }
 
-input[type="color"]::-webkit-color-swatch {
-  border-radius: 15px;
-  border: 3px solid black;
+.icon {
+  border: 4px solid transparent;
+  padding: 2px;
 }
-input[type="color"]::-moz-color-swatch {
-  border-radius: 15px;
-  border: 3px solid black;
+
+#color-picker-icon {
+  border: 4px solid black;
+  border-radius: 50%;
+  padding: 2px;
 }
 
 button {
@@ -153,7 +144,7 @@ button:hover {
 }
 
 .modal {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   right: 0;
@@ -179,6 +170,7 @@ button:hover {
   }
   #menu-row {
     flex-direction: row;
+    flex-wrap: wrap;
     max-width: 500px;
     width: 100%;
   }
