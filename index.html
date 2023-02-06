@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Etch-A-Sketch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/41013f5681.js"
+      crossorigin="anonymous"
+    ></script>
+  <script defer src="script.js"></script></head>
+  <body>
+    <header>
+      <h1>Etch-A-Sketch</h1>
+    </header>
+    <main>
+      <ul id="menu">
+        <div id="menu-row">
+          <li><input type="color" value="#000000" /></li>
+          <li>
+            <button id="normal">
+              <i class="fa-solid fa-paintbrush"></i>
+            </button>
+          </li>
+          <li>
+            <button id="rainbow"><i class="fa-solid fa-rainbow"></i></button>
+          </li>
+          <li>
+            <button id="fill"><i class="fa-solid fa-fill-drip"></i></button>
+          </li>
+          <li>
+            <button id="eraser"><i class="fa-solid fa-eraser"></i></button>
+          </li>
+          <li>
+            <button id="reset"><i class="fa-solid fa-trash"></i></button>
+          </li>
+          <li>
+            <button id="gridlines"><i class="fa-solid fa-table"></i></button>
+          </li>
+          <li>
+            <button id="save-as-img">
+              <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+          </li>
+        </div>
+        <li id="board-size-container">
+          <label for="board-size" id="board-size-value">11x11</label
+          ><input type="range" min="1" max="64" value="11" id="board-size" />
+          <button id="newGridConfirmation">New Board</button>
+        </li>
+      </ul>
+      <div id="board"></div>
+    </main>
+    <div class="loader"></div>
+    <div class="overlay"></div>
+    <div class="modal">
+      <img class="img-to-download" />
+      <button class="download">Download</button>
+    </div>
+  </body>
+</html>
