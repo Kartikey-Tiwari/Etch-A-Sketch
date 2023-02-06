@@ -1,23 +1,96 @@
+import * as htmlToImage from "html-to-image";
+import "./style.css";
+// dom elements
 const board = document.querySelector("#board");
-let boardSize = 11;
-const buttons = document.querySelectorAll("button:not(#newGridConfirmation)");
+const buttons = document.querySelectorAll(
+  "button:not(#newGridConfirmation,#save-as-img)"
+);
 const newGridButton = document.querySelector("#newGridConfirmation");
-const gridlineButton = document.querySelector("#gridlines");
+const colorInput = document.querySelector('input[type="color"]');
+const slider = document.querySelector("#board-size");
+const saveImgBtn = document.querySelector("#save-as-img");
+const img = document.querySelector(".img-to-download");
+const downloadBtn = document.querySelector(".download");
+const overlay = document.querySelector(".overlay");
+const modal = document.querySelector(".modal");
+
+//variables to manage state
+let sliderVal = document.querySelector("#board-size-value");
+let boardSize = 11;
 let isGridOn = false;
 let mouseDownInBoard = false;
+let currentColor = `${colorInput.value}`;
 let activeMode = document.querySelector("#normal");
 activeMode.classList.add("active");
-let slider = document.querySelector("#board-size");
-let sliderVal = document.querySelector("#board-size-value");
-const fillButton = document.querySelector("#fill");
-const colorInput = document.querySelector('input[type="color"]');
-let currentColor = `${colorInput.value}`;
 
-colorInput.addEventListener("input", (event) => {
-  if (activeMode.id !== "eraser") currentColor = `${colorInput.value}`;
-});
+// board related functions
+function drawBoard() {
+  for (let j = 0; j < boardSize; j++) {
+    console.log("j: " + j);
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.height = `calc(100%/${boardSize})`;
+    for (let i = 0; i < boardSize; i++) {
+      const div = document.createElement("div");
+      div.addEventListener("mouseover", colorBoard);
+      div.addEventListener("mousedown", colorBoard);
+      div.style.width = `calc(100%/${boardSize})`;
+      div.style.background = `100%`;
+      div.style.backgroundColor = "white";
+      row.appendChild(div);
+    }
+    board.appendChild(row);
+    console.log("j: " + j);
+  }
+}
 
-function drawGrid(border) {
+function updateBoardSize() {
+  let mainWidth = board.parentElement.offsetWidth;
+  let mainHeight = board.parentElement.offsetHeight;
+  let min = 0.9 * Math.min(mainWidth, mainHeight);
+
+  board.style.width = min + "px";
+  board.style.height = min + "px";
+}
+
+window.onresize = function () {
+  updateBoardSize();
+};
+
+function removeBoard() {
+  for (let i = board.children.length - 1; i >= 0; i--) {
+    board.children[i].remove();
+  }
+}
+
+// functions needed by event listeners
+function colorBoard(event) {
+  event.preventDefault();
+  if (activeMode.id === "eraser") currentColor = "white";
+  if (event.type === "mousedown") {
+    if (activeMode.id === "fill") {
+      const x = Array.from(board.children).indexOf(event.target.parentElement);
+      const y = Array.from(event.target.parentElement.children).indexOf(
+        event.target
+      );
+      floodFill(event.target, x, y);
+      return;
+    }
+    mouseDownInBoard = true;
+  }
+  if (event.buttons === 1 && mouseDownInBoard) {
+    if (activeMode.getAttribute("id") === "rainbow") {
+      currentColor = `#${Math.floor(Math.random() * (0xffffff + 1)).toString(
+        16
+      )}`;
+    }
+    event.target.style.backgroundColor = `${currentColor}`;
+  } else {
+    mouseDownInBoard = false;
+  }
+}
+
+function displayGridWithBorder(border) {
   Array.from(board.children).forEach((row) => {
     Array.from(row.children).forEach((cell) => {
       if (cell != row.children[0]) cell.style.borderLeft = border;
@@ -26,53 +99,13 @@ function drawGrid(border) {
   });
 }
 
-gridlineButton.addEventListener("click", (event) => {
-  if (!isGridOn) {
-    isGridOn = true;
-    gridlineButton.classList.add("active");
-    drawGrid("1px solid grey");
-  } else {
-    isGridOn = false;
-    gridlineButton.classList.remove("active");
-    drawGrid("none");
-  }
-});
+function drawGrid() {
+  displayGridWithBorder("1px solid grey");
+}
 
-newGridButton.addEventListener("click", (event) => {
-  if (+slider.value === boardSize) return;
-  if (confirm("Create new board?")) {
-    removeBoard();
-    boardSize = +slider.value;
-    drawBoard();
-    if (isGridOn) drawGrid("1px solid grey");
-  }
-});
-
-slider.addEventListener("input", (event) => {
-  sliderVal.textContent = `${slider.value} x ${slider.value}`;
-});
-
-buttons.forEach((button) => {
-  if (button.id != "gridlines")
-    button.addEventListener("click", (event) => {
-      if (button.id !== "reset") {
-        activeMode.classList.remove("active");
-        button.classList.add("active");
-        activeMode = button;
-        if (button.id === "normal" || button.id === "fill") {
-          currentColor = `${colorInput.value}`;
-        } else if (button.id === "eraser") {
-          currentColor = "white";
-        }
-      } else {
-        Array.from(board.children).forEach((row) => {
-          Array.from(row.children).forEach((cell) => {
-            cell.style.backgroundColor = "white";
-          });
-        });
-      }
-    });
-});
+function removeGrid() {
+  displayGridWithBorder("none");
+}
 
 function hexToRgb(hex) {
   let r = parseInt(hex.substring(1, 3), 16);
@@ -113,68 +146,125 @@ function floodFill(div, x, y) {
   }
 }
 
-function colorDivNormal(event) {
-  event.preventDefault();
-  if (activeMode.id === "eraser") currentColor = "white";
-  if (event.type === "mousedown") {
-    if (activeMode.id === "fill") {
-      const x = Array.from(board.children).indexOf(event.target.parentElement);
-      const y = Array.from(event.target.parentElement.children).indexOf(
-        event.target
-      );
-      floodFill(event.target, x, y);
-      return;
+colorInput.addEventListener("input", (event) => {
+  if (activeMode.id !== "eraser") currentColor = `${colorInput.value}`;
+});
+
+function showModal() {
+  overlay.style.display = "block";
+  modal.style.display = "block";
+}
+
+function closeModal() {
+  overlay.style.display = "none";
+  modal.style.display = "none";
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeModal();
+  }
+});
+
+overlay.addEventListener("click", () => {
+  closeModal();
+});
+
+downloadBtn.addEventListener("click", function () {
+  const link = document.createElement("a");
+  link.download = "image.png";
+  link.href = img.src;
+  link.click();
+});
+
+// menu buttons
+buttons.forEach((button) => {
+  if (button.id != "gridlines")
+    button.addEventListener("click", (event) => {
+      if (button.id !== "reset") {
+        activeMode.classList.remove("active");
+        button.classList.add("active");
+        activeMode = button;
+        if (button.id === "normal" || button.id === "fill") {
+          currentColor = `${colorInput.value}`;
+        } else if (button.id === "eraser") {
+          currentColor = "white";
+        }
+      } else {
+        Array.from(board.children).forEach((row) => {
+          Array.from(row.children).forEach((cell) => {
+            cell.style.backgroundColor = "white";
+          });
+        });
+      }
+    });
+  else {
+    button.addEventListener("click", () => {
+      if (!isGridOn) {
+        isGridOn = true;
+        button.classList.add("active");
+        drawGrid();
+      } else {
+        isGridOn = false;
+        button.classList.remove("active");
+        removeGrid();
+      }
+    });
+  }
+});
+
+newGridButton.addEventListener("click", (event) => {
+  if (+slider.value === boardSize) return;
+  if (confirm("Create new board?")) {
+    removeBoard();
+    boardSize = +slider.value;
+    drawBoard();
+    if (isGridOn) drawGrid();
+  }
+});
+
+slider.addEventListener("input", (event) => {
+  sliderVal.textContent = `${slider.value} x ${slider.value}`;
+});
+
+const loader = document.querySelector(".loader");
+
+function showLoader() {
+  overlay.style.display = "block";
+  loader.style.display = "block";
+}
+
+function hideLoader() {
+  loader.style.display = "none";
+}
+saveImgBtn.addEventListener("click", () => {
+  showLoader();
+  setTimeout(() => {
+    if (isGridOn) {
+      removeGrid();
     }
-    mouseDownInBoard = true;
-  }
-  if (event.buttons === 1 && mouseDownInBoard) {
-    if (activeMode.getAttribute("id") === "rainbow") {
-      currentColor = `#${Math.floor(Math.random() * (0xffffff + 1)).toString(
-        16
-      )}`;
+  }, 0);
+
+  setTimeout(() => {
+    htmlToImage
+      .toPng(board)
+      .then(function (dataUrl) {
+        hideLoader();
+        img.src = dataUrl;
+        showModal();
+      })
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
+  }, 1);
+
+  setTimeout(() => {
+    if (isGridOn) {
+      drawGrid();
     }
-    event.target.style.backgroundColor = `${currentColor}`;
-  } else {
-    mouseDownInBoard = false;
-  }
-}
+  }, 2);
+});
 
-function removeBoard() {
-  for (let i = board.children.length - 1; i >= 0; i--) {
-    board.children[i].remove();
-  }
-}
-
-function drawBoard() {
-  for (let j = 0; j < boardSize; j++) {
-    const row = document.createElement("div");
-    row.style.display = "flex";
-    row.style.height = `calc(100%/${boardSize})`;
-    for (let i = 0; i < boardSize; i++) {
-      const div = document.createElement("div");
-      div.addEventListener("mouseover", colorDivNormal);
-      div.addEventListener("mousedown", colorDivNormal);
-      div.style.width = `calc(100%/${boardSize})`;
-      div.style.background = `100%`;
-      div.style.backgroundColor = "white";
-      row.appendChild(div);
-    }
-    board.appendChild(row);
-  }
-}
-
-function updateBoardSize() {
-  let mainWidth = board.parentElement.offsetWidth;
-  let mainHeight = board.parentElement.offsetHeight;
-  let min = 0.9 * Math.min(mainWidth, mainHeight);
-
-  board.style.width = min + "px";
-  board.style.height = min + "px";
-}
-
-window.onresize = function () {
-  updateBoardSize();
-};
-
+//initialising drawing board
 updateBoardSize();
 drawBoard();

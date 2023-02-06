@@ -22,6 +22,7 @@ body {
   flex-direction: column;
   background-color: #ff5e5b;
   padding: 10px;
+  position: relative;
   min-height: 100vh;
 }
 
@@ -101,7 +102,7 @@ input[type="color"]::-moz-color-swatch {
 }
 
 button {
-  background-color: transparent;
+  background-color: white;
   border: none;
   font-size: 16px;
   padding: 15px;
@@ -115,6 +116,57 @@ button:hover {
 #newGridConfirmation {
   background-color: white;
   border-radius: 5px;
+}
+
+.loader {
+  z-index: 3;
+  display: none;
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 40%;
+  left: 43%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 2;
+  display: none;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  transform: translate(-50%, -50%);
+  width: calc(0.8 * min(100vh, 100vw));
+  height: calc(0.8 * min(100vh, 100vw) + 54px);
+  z-index: 3;
+  display: none;
+}
+
+.img-to-download {
+  width: calc(0.8 * min(100vh, 100vw));
 }
 
 @media (max-width: 768px) {
